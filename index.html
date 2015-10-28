@@ -6,16 +6,34 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="calculator.js"></script>
     <script>
-        var calc = new calculator(function(type, value){
-            console.log("type : ", type, ", value : ", value.val);
+        var calc = new calculator(function(type, value, item){
+//            console.log("type : ", type, ", value : ", value, ", item : ", item);
+            if(type == "calculated"){
+                console.log(value);
+            }
         });
 
-        calc.addItem("2");
-        calc.addItem("x");
-        calc.addItem("10");
-        calc.addItem("/");
-        calc.addItem("5");
+        // 1+1== (2)
+        calc.addItem("1");
         calc.addItem("+");
+        calc.addItem("1");
+        calc.addItem("=");
+        calc.allClear();
+
+        // 0+2== (4)
+        calc.addItem("+");
+        calc.addItem("2");
+        calc.addItem("=");
+        calc.addItem("=");
+        calc.allClear();
+
+        //2+2+= (8)
+        calc.addItem("2");
+        calc.addItem("+");
+        calc.addItem("2");
+        calc.addItem("+");
+        calc.addItem("=");
+        calc.allClear();
     </script>
 </head>
 <body>

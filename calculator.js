@@ -9,7 +9,7 @@ var calculator = function (callback) {
         //an example of what the callback function has inside of it
         //scope is the calculator
         //type is teh type of callback that has happened
-        // type {'calculation','itemAdded','error'}
+        // type {'calculated','itemAdded','error'}
         // value : value of the item that triggered the callback
     };
 
@@ -32,19 +32,49 @@ var calculator = function (callback) {
         var v = null;
 
         if (isNaN(parseFloat(val))) {
-            v = self.createOperator(val);
+            v = self.createItem(val);
         } else {
             v = new number(val);
         }
 
-        var lastItem = new calculatorItem();
+        if (v.val === undefined) {
+            throw(new Error("Calculator addItem Error, value passed in " + val + " is not a valued argument"));
+        }
 
-        if (self.arr.length > 1) {
+        var lastItem = new calculatorItem();
+        var newItem;
+
+        var n1 = (self.arr.length > 0) ? self.arr[0] : new calculatorItem();
+
+        if (self.arr.length > 0) {
             lastItem = self.arr[self.arr.length - 1];
         }
         //we check if the last item inserted was a number and if it is we update the value by adding the numbers together as strings
-        if (lastItem.isNumber && v.isNumber) {
+        if (v.isNumber && lastItem.isNumber) {
+            console.log("im here");
             lastItem.val = lastItem.val + "" + v.val;
+        } else if (v.isEqualSign) {
+            if (self.arr.length == 1) {
+                if (n1.isCalculation) {
+                    self.arr.push(n1.operator, n1.num2);
+                }
+            }
+
+            //equal was last item added
+            if (self.arr.length == 2) {
+                if (n1.isNumber) {
+                    self.arr.push(n1);
+                } else if (n1.isCalculation) {
+                    self.arr.push(n1);
+                }
+            }
+
+            if (self.arr.length == 3) {
+                var calc1 = new calculation(self.arr[0], self.arr[1], self.arr[2]);
+                self.arr = [calc1, calc1.operator, calc1.num2];
+                self.c.call(self, 'calculated', calc1.val, calc1);
+            }
+
         } else {
             //new value is either not a number or the previous item wasn't a number
             if (lastItem.isOperator && v.isOperator) {
@@ -53,18 +83,20 @@ var calculator = function (callback) {
             }
 
             if (self.operatorAlreadyExists && v.isOperator) {
-                var newV = self.do();
-                self.c.call(self, 'calculation', newV);
-                if (newV.isNumber) {
-                    self.arr = [newV, v];
+                if (self.arr.length == 3) {
+                    var calc1 = new calculation(self.arr[0], self.arr[1], self.arr[2]);
+                    self.c.call(self, 'calculated', calc1.val, calc1);
+
+                    self.arr = [calc1, v];
                 }
             } else {
-                //first item trying to be added as an operator auto add 0 at the begining
+                //when there isnt already an operator
+                //push either operator or number to the end of the array
                 if (self.arr.length === 0 && v.isOperator) {
                     self.arr.push(new number("0"));
                 }
                 self.arr.push(v);
-                self.c.call(self, 'itemAdded', v);
+                self.c.call(self, 'itemAdded', v.val, v);
             }
         }
     }
@@ -83,7 +115,8 @@ var calculator = function (callback) {
         }
     });
 
-    self.createOperator = function (operator) {
+    self.createItem = function (operator) {
+
         var r = new calculatorItem();
         switch (operator) {
             case '+':
@@ -98,30 +131,23 @@ var calculator = function (callback) {
             case 'x':
                 r = new multiple();
                 break;
-        }
-
-        return r;
-    }
-
-    self.do = function (arr) {
-        var values = arr;
-        if (!values) {
-            values = self.arr;
-        }
-
-        var r = new calculatorItem();
-
-        for (var i = 0; i < values.length; i++) {
-            var item = values[i];
-            if (item.isOperator && values.length > 2) {
-                r = new number(item.calculate(values[i - 1].val, values[i + 1].val));
+            case '=':
+                r = new equalSign();
                 break;
-            }
         }
 
         return r;
     }
 
+    self.clear = function () {
+        self.arr.pop();
+        self.c.call(self, 'C');
+    }
+
+    self.allClear = function () {
+        self.arr = [];
+        self.c.call(self, 'AC');
+    }
 
     Object.defineProperty(self, "displayValue", {
         get: function () {
@@ -151,9 +177,29 @@ var calculatorItem = function (value) {
             }
         });
 
+    Object.defineProperty(self, "isEqualSign",
+        {
+            get: function () {
+                return self instanceof equalSign;
+            }
+        });
+
+    Object.defineProperty(self, "isCalculation",
+        {
+            get: function () {
+                return self instanceof calculation;
+            }
+        });
+
     Object.defineProperty(self, "val", {
         get: function () {
-            return val;
+
+            //handle calculation object
+            if (typeof val == 'function') {
+                return val();
+            } else {
+                return val;
+            }
         },
         set: function (nV) {
             val = nV;
@@ -163,17 +209,37 @@ var calculatorItem = function (value) {
     self.val = value;
 }
 
+var calculation = function (num1, op, num2) {
+    var self = this;
+
+    self.num1 = num1;
+    self.num2 = num2;
+    self.operator = op;
+
+    calculatorItem.call(self, function () {
+        var calculatedValue = op.calculate(num1, num2);
+        return calculatedValue;
+    });
+
+    self.calculate = function () {
+        return op.calculate(num1, self.val);
+    }
+}
+
+calculation.prototype = Object.create(calculatorItem.prototype);
+calculation.prototype.constructor = calculatorItem;
+
 var number = function (num, callback) {
     var self = this;
 
     var val = null;
 
     if (typeof $ === "undefined") {
-        throw(new Error("jQuery is needed to do any calulations"));
+        throw(new Error("jQuery is needed to do any calculations"));
         return false;
     }
 
-    calculatorItem.call(self, num);
+    calculatorItem.call(self, parseFloat(num));
 
     self.displayElm = $('<div>', {
         class: "num"
@@ -198,8 +264,32 @@ operator.prototype.constructor = calculatorItem;
 
 operator.prototype.priority = false;
 operator.prototype.calculate = function (num1, num2) {
-    var val = 0;
-    return val;
+    var num1Value = num1;
+    var num2Value = num2;
+    //this allows us to handle straight js primitive numbers and our number object
+    if (typeof num1 == "number") {
+        num1Value = new Number(num1);
+    }
+    //this allows us to handle straight js primitive numbers and our number object
+    if (typeof num2 == "number") {
+        num2Value = new Number(num2);
+    }
+
+    var r1;
+    var r2;
+
+    if (num1Value instanceof calculation) {
+        r1 = num1Value.val;
+    } else {
+        r1 = parseFloat(num1Value.val);
+    }
+    if (num2Value instanceof calculation) {
+        r2 = num2Value.val;
+    } else {
+        r2 = parseFloat(num2Value.val);
+    }
+
+    return [r1, r2];
 }
 
 var plus = function () {
@@ -207,12 +297,9 @@ var plus = function () {
     operator.call(self, "+");
 
     self.calculate = function (num1, num2) {
-        var n1 = parseFloat(num1);
-        var n2 = parseFloat(num2);
-        if (n1 == NaN || n2 == NaN) {
-            return new Error("Plus operator Error, cant convert parameters into numbers");
-        }
-        return n1 + n2;
+        var values = operator.prototype.calculate.call(this, num1, num2);
+
+        return values[0] + values[1];
     }
 }
 
@@ -221,12 +308,10 @@ var subtract = function () {
     operator.call(self, "-");
 
     self.calculate = function (num1, num2) {
-        var n1 = parseFloat(num1);
-        var n2 = parseFloat(num2);
-        if (n1 == NaN || n2 == NaN) {
-            return new Error("Plus operator Error, cant convert parameters into numbers");
-        }
-        return n1 - n2;
+        var values = operator.prototype.calculate.call(this, num1, num2);
+
+
+        return values[0] - values[1];
     }
 }
 
@@ -235,12 +320,8 @@ var multiple = function () {
     operator.call(self, "x");
 
     self.calculate = function (num1, num2) {
-        var n1 = parseFloat(num1);
-        var n2 = parseFloat(num2);
-        if (n1 == NaN || n2 == NaN) {
-            return new Error("Plus operator Error, cant convert parameters into numbers");
-        }
-        return n1 * n2;
+        var values = operator.prototype.calculate.call(this, num1, num2);
+        return values[0] * values[1];
     }
 }
 
@@ -249,12 +330,8 @@ var divide = function () {
     operator.call(self, "/");
 
     self.calculate = function (num1, num2) {
-        var n1 = parseFloat(num1);
-        var n2 = parseFloat(num2);
-        if (n1 == NaN || n2 == NaN) {
-            return new Error("Plus operator Error, cant convert parameters into numbers");
-        }
-        return n1 / n2;
+        var values = operator.prototype.calculate.call(this, num1, num2);
+        return values[0] / values[1];
     }
 }
 
@@ -269,3 +346,32 @@ multiple.prototype.constructor = operator;
 
 divide.prototype = Object.create(operator.prototype);
 divide.prototype.constructor = operator;
+
+var equalSign = function () {
+    var self = this;
+    calculatorItem.call(self, "=");
+
+    self.calculate = function (arr, calc) {
+
+        var lastItem = arr[arr.length - 1];
+        var r;
+
+        //if no operator then the length should only be 1, else error out
+        if (!calc.operatorAlreadyExists && calc.length == 1) {
+            return arr[0];
+        } else if (!calc.operatorAlreadyExists && calc.length > 1) {
+            return new Error("Equal Sign, unable to calculate result. Unexpected calculator item length");
+        }
+
+        console.log("lastItem.isOperator : ", arr[arr.length - 2]);
+
+        if (lastItem.isOperator) {
+            //use the item before the operator and use it for both sides of the equation
+            r = new number(lastItem.calculate(arr[arr.length - 2], arr[arr.length - 2]));
+        } else {
+            r = calc.do(arr);
+        }
+
+        return r;
+    }
+}
