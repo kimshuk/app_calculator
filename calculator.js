@@ -5,7 +5,7 @@
 
 var calculator = function (callback) {
     var self = this;
-    var c = (typeof callback == 'function')?callback:function(type,value){
+    var c = (typeof callback == 'function') ? callback : function (type, value) {
         //an example of what the callback function has inside of it
         //scope is the calculator
         //type is teh type of callback that has happened
@@ -20,7 +20,7 @@ var calculator = function (callback) {
         return new Error("jQuery isn't loaded, please load jQuery before attempting to use the calculate object");
     }
 
-    if(!c){
+    if (!c) {
         throw(new Error("Parameter passed into calculator wasnt a function"));
     }
 
@@ -39,28 +39,28 @@ var calculator = function (callback) {
 
         var lastItem = new calculatorItem();
 
-        if(self.arr.length > 1){
-            lastItem = self.arr[self.arr.length-1];
+        if (self.arr.length > 1) {
+            lastItem = self.arr[self.arr.length - 1];
         }
         //we check if the last item inserted was a number and if it is we update the value by adding the numbers together as strings
-        if(lastItem.isNumber && v.isNumber){
-            lastItem.val = lastItem.val+""+v.val;
-        }else{
+        if (lastItem.isNumber && v.isNumber) {
+            lastItem.val = lastItem.val + "" + v.val;
+        } else {
             //new value is either not a number or the previous item wasn't a number
-            if(lastItem.isOperator && v.isOperator){
+            if (lastItem.isOperator && v.isOperator) {
                 //both the last and new items are operators in this scenario dont do anything
                 return;
             }
 
-            if(self.operatorAlreadyExists && v.isOperator){
+            if (self.operatorAlreadyExists && v.isOperator) {
                 var newV = self.do();
                 self.c.call(self, 'calculation', newV);
-                if(newV.isNumber){
-                    self.arr = [newV,v];
+                if (newV.isNumber) {
+                    self.arr = [newV, v];
                 }
-            }else{
+            } else {
                 //first item trying to be added as an operator auto add 0 at the begining
-                if(self.arr.length === 0 && v.isOperator){
+                if (self.arr.length === 0 && v.isOperator) {
                     self.arr.push(new number("0"));
                 }
                 self.arr.push(v);
@@ -70,10 +70,10 @@ var calculator = function (callback) {
     }
 
     Object.defineProperty(self, "operatorAlreadyExists", {
-        get:function(){
+        get: function () {
             var r = false;
-            for(var index in self.arr){
-                if(self.arr[index] instanceof operator){
+            for (var index in self.arr) {
+                if (self.arr[index] instanceof operator) {
                     r = true;
                     break;
                 }
@@ -83,9 +83,9 @@ var calculator = function (callback) {
         }
     });
 
-    self.createOperator  = function(operator){
+    self.createOperator = function (operator) {
         var r = new calculatorItem();
-        switch(operator){
+        switch (operator) {
             case '+':
                 r = new plus();
                 break;
@@ -113,8 +113,8 @@ var calculator = function (callback) {
 
         for (var i = 0; i < values.length; i++) {
             var item = values[i];
-            if(item.isOperator && values.length > 2){
-                r = new number(item.calculate(values[i-1].val, values[i+1].val));
+            if (item.isOperator && values.length > 2) {
+                r = new number(item.calculate(values[i - 1].val, values[i + 1].val));
                 break;
             }
         }
@@ -152,10 +152,10 @@ var calculatorItem = function (value) {
         });
 
     Object.defineProperty(self, "val", {
-        get:function(){
+        get: function () {
             return val;
         },
-        set:function(nV){
+        set: function (nV) {
             val = nV;
         }
     });
