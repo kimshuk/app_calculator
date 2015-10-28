@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script src="main.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="calculator.js"></script>
+    <script>
+        var calc = new calculator(function(type, value){
+            console.log("type : ", type, ", value : ", value.val);
+        });
+
+        calc.addItem("2");
+        calc.addItem("x");
+        calc.addItem("10");
+        calc.addItem("/");
+        calc.addItem("5");
+        calc.addItem("+");
+    </script>
 </head>
 <body>
 </body>
