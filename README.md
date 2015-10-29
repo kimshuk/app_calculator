@@ -33,7 +33,7 @@ to the calculator object the user can interact with the object to receive the va
 > - Take layout from finished v0.1 and implement the following:
     - Insert a link to the following javascript files
         - jQuery's latest version
-        - http://LearningFuze.github.io/calculator/calculator.js
+        - http://Learning-Fuze.github.io/calculator/calculator.js
     - JS Functionality
         - Declare and define a function that takes in 3 parameters
             - **Parameters**
