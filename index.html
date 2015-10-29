@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculator Example</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="calculator.js"></script>
+    <script>
+        function callback(type, value, item) {
+            switch (value) {
+                case undefined:
+                    $('#display_area').html("");
+                    break;
+                default:
+                    $('#display_area').html(value);
+                    break;
+            }
+        }
+        var my_calculator = new calculator(callback);
+        $(document).ready(function () {
+            $('button').on('click', function () {
+                var val = $(this).text();
+                console.log("btn clicked : ", val)
+                switch (val) {
+                    case 'AC':
+                        my_calculator.allClear();
+                        break;
+                    default:
+                        my_calculator.addItem($(this).text());
+                        break;
+                }
+            });
+        })
+    </script>
+    <style>
+        #display_area {
+            width: 300px;
+            height: 30px;
+            background-color: #cccccc;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div id="display_area"></div>
+<div id="buttonContainer">
+    <div>
+        <button>1</button>
+    </div>
+    <div>
+        <button>2</button>
+    </div>
+    <div>
+        <button>+</button>
+    </div>
+    <div>
+        <button>=</button>
+    </div>
+    <div>
+        <button>AC</button>
+    </div>
+</div>
+
+</body>
+</html>
