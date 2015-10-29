@@ -49,10 +49,11 @@ var calculator = function (callback) {
         if (self.arr.length > 0) {
             lastItem = self.arr[self.arr.length - 1];
         }
+        console.log(lastItem);
         //we check if the last item inserted was a number and if it is we update the value by adding the numbers together as strings
         if (v.isNumber && lastItem.isNumber) {
-            console.log("im here");
             lastItem.val = lastItem.val + "" + v.val;
+            self.c.call(self, 'itemAdded', lastItem.val, lastItem);
         } else if (v.isEqualSign) {
             if (self.arr.length == 1) {
                 if (n1.isCalculation) {
