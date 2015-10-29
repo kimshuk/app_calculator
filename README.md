@@ -51,7 +51,7 @@ to the calculator object the user can interact with the object to receive the va
 
 ## Example
 
-#### <a href="http://Learning-Fuze.github.io/calculator/">View Demo</a>
+#### <a href="http://Learning-Fuze.github.io/calculator/" target="_blank">View Demo</a>
 
 #### Code Example
 ```
