@@ -72,7 +72,7 @@ var calculator = function (callback) {
 
             if (self.arr.length == 3) {
                 var calc1 = new calculation(self.arr[0], self.arr[1], self.arr[2]);
-                self.arr = [calc1, calc1.operator, calc1.num2];
+                self.arr = [calc1];
                 self.c.call(self, 'calculated', calc1.val, calc1);
             }
 
@@ -96,7 +96,12 @@ var calculator = function (callback) {
                 if (self.arr.length === 0 && v.isOperator) {
                     self.arr.push(new number("0"));
                 }
-                self.arr.push(v);
+                if(n1.isCalculation && v.isNumber){
+                    self.arr = [v];
+                }else{
+                    self.arr.push(v);
+                }
+
                 self.c.call(self, 'itemAdded', v.val, v);
             }
         }

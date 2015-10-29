@@ -7,33 +7,19 @@
     <script src="calculator.js"></script>
     <script>
         var calc = new calculator(function(type, value, item){
-//            console.log("type : ", type, ", value : ", value, ", item : ", item);
-            if(type == "calculated"){
-                console.log(value);
-            }
+            console.log("type : ", type, ", value : ", value, ", item : ", item);
         });
 
         // 1+1== (2)
         calc.addItem("1");
         calc.addItem("+");
-        calc.addItem("1");
+        calc.addItem("2");
+        calc.addItem("+");
         calc.addItem("=");
-        calc.allClear();
+        calc.addItem("=");
+        calc.addItem("=");
 
-        // 0+2== (4)
-        calc.addItem("+");
-        calc.addItem("2");
-        calc.addItem("=");
-        calc.addItem("=");
-        calc.allClear();
 
-        //2+2+= (8)
-        calc.addItem("2");
-        calc.addItem("+");
-        calc.addItem("2");
-        calc.addItem("+");
-        calc.addItem("=");
-        calc.allClear();
     </script>
 </head>
 <body>
