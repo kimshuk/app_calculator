@@ -6,16 +6,164 @@
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="calculator.js"></script>
     <script>
-        var calc = new calculator(function(type, value, item){
-            console.log("type : ", type, ", value : ", value, ", item : ", item);
+        var calc = new calculator(function (type, value, item) {
+            //used for debugging
+            //console.log("type : ", type, ", value : ", value, ", item : ", item);
         });
 
         // 1+1== (2)
         calc.addItem("1");
         calc.addItem("+");
         calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != 3) {
+                console.error("Error with calculator : 1+2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("x");
+        calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != 2) {
+                console.error("Error with calculator : 1x2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("/");
+        calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != .5) {
+                console.error("Error with calculator : 1/2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("-");
+        calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != -1) {
+                console.error("Error with calculator : 1-2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != 4) {
+                console.error("Error with calculator : 1+1+2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("+");
+        calc.addItem("+");
+        calc.addItem("+");
+        calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != 3) {
+                console.error("Error with calculator : 1++++2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("-");
+        calc.addItem("x");
+        calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != 2) {
+                console.error("Error with calculator : 1 + - x 2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("1");
         calc.addItem("=");
         calc.addItem("=");
+        calc.addItem("=", function (val) {
+            if (val != 4) {
+                console.error("Error with calculator : 1+1=== is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("=");
+        calc.addItem("+");
+        calc.addItem("=", function (val) {
+            if (val != 8) {
+                console.error("Error with calculator : 1  +  1  + = + = is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("+");
+        calc.addItem("3");
+        calc.addItem("/");
+        calc.addItem("4");
+        calc.addItem("+");
+        calc.addItem("10");
+        calc.addItem("*");
+        calc.addItem("2");
+        calc.addItem("=", function (val) {
+            if (val != 22) {
+                console.error("Error with calculator : 1 + 3 / 4 + 10 * 2 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("1");
+        calc.addItem("/");
+        calc.addItem("0", function (val) {
+            if (val != 0) {
+                console.error("Error with calculator : 1/0 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("+");
+        calc.addItem("+");
+        calc.addItem("+");
+        calc.addItem("+");
+        calc.addItem("1");
+        calc.addItem("*");
+        calc.addItem("3");
+        calc.addItem("=", function (val) {
+            if (val != 3) {
+                console.error("Error with calculator : ++++ 1 * 3 is not equal to ", val);
+            }
+        });
+
+        calc.addItem("3");
+        calc.addItem("*");
+        calc.addItem("=", function (val) {
+            if (val != 9) {
+                console.error("Error with calculator : 3 * =  is not equal to ", val);
+            }
+        });
+
+        calc.addItem("3");
+        calc.addItem("=", function (val) {
+            if (val != 3) {
+                console.error("Error with calculator : 3 * = is not equal to ", val);
+            }
+        });
+
+        calc.addItem("=");
+        calc.addItem("=");
+        calc.addItem("=");
+        calc.addItem("=", function (val) {
+            if (val != 0) {
+                console.error("Error with calculator : = = = =  is not equal to ", val);
+            }
+        });
 
 
     </script>

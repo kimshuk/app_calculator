@@ -28,13 +28,19 @@ var calculator = function (callback) {
 
     self.type = null;
 
-    self.addItem = function (val) {
+    self.addItem = function (val, func) {
         var v = null;
+        var callback = function () {
+        };
 
         if (isNaN(parseFloat(val))) {
             v = self.createItem(val);
         } else {
             v = new number(val);
+        }
+
+        if (func != undefined || typeof func == 'function') {
+            callback = func;
         }
 
         if (v.val === undefined) {
@@ -49,7 +55,6 @@ var calculator = function (callback) {
         if (self.arr.length > 0) {
             lastItem = self.arr[self.arr.length - 1];
         }
-        console.log(lastItem);
         //we check if the last item inserted was a number and if it is we update the value by adding the numbers together as strings
         if (v.isNumber && lastItem.isNumber) {
             lastItem.val = lastItem.val + "" + v.val;
@@ -73,22 +78,29 @@ var calculator = function (callback) {
             if (self.arr.length == 3) {
                 var calc1 = new calculation(self.arr[0], self.arr[1], self.arr[2]);
                 self.arr = [calc1];
-                self.c.call(self, 'calculated', calc1.val, calc1);
+                (function () {
+                    callback.call(calc1, calc1.val);
+                    self.c.call(self, 'calculated', calc1.val, calc1);
+                })();
             }
 
         } else {
             //new value is either not a number or the previous item wasn't a number
             if (lastItem.isOperator && v.isOperator) {
-                //both the last and new items are operators in this scenario dont do anything
+                //both the last and new items are operators replace operator
+                self.arr[self.arr.length - 1] = v;
                 return;
             }
 
             if (self.operatorAlreadyExists && v.isOperator) {
                 if (self.arr.length == 3) {
                     var calc1 = new calculation(self.arr[0], self.arr[1], self.arr[2]);
-                    self.c.call(self, 'calculated', calc1.val, calc1);
-
                     self.arr = [calc1, v];
+
+                    (function () {
+                        callback.call(calc1, calc1.val);
+                        self.c.call(self, 'calculated', calc1.val, calc1);
+                    })();
                 }
             } else {
                 //when there isnt already an operator
@@ -96,19 +108,24 @@ var calculator = function (callback) {
                 if (self.arr.length === 0 && v.isOperator) {
                     self.arr.push(new number("0"));
                 }
-                if(n1.isCalculation && v.isNumber){
+                if (n1.isCalculation && v.isNumber) {
                     //if only the calculation remove and insert value
-                    if(self.arr.length == 1){
+                    if (self.arr.length == 1) {
                         self.arr = [v];
-                    }else{
+                    } else {
                         self.arr.push(v);
                     }
 
-                }else{
+                } else {
                     self.arr.push(v);
                 }
 
                 self.c.call(self, 'itemAdded', v.val, v);
+
+                (function () {
+                    callback.call(v, v.val);
+                    self.c.call(self, 'itemAdded', v.val, v);
+                })();
             }
         }
     }
@@ -140,6 +157,7 @@ var calculator = function (callback) {
             case '/':
                 r = new divide();
                 break;
+            case '*':
             case 'x':
                 r = new multiple();
                 break;
