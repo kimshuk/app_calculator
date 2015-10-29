@@ -97,7 +97,13 @@ var calculator = function (callback) {
                     self.arr.push(new number("0"));
                 }
                 if(n1.isCalculation && v.isNumber){
-                    self.arr = [v];
+                    //if only the calculation remove and insert value
+                    if(self.arr.length == 1){
+                        self.arr = [v];
+                    }else{
+                        self.arr.push(v);
+                    }
+
                 }else{
                     self.arr.push(v);
                 }
