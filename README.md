@@ -15,7 +15,7 @@ to the calculator object the user can interact with the object to receive the va
 > - Pull Latest Changes
         - `git checkout master`
         - `git pull origin master`
-> - Create a the feature branch
+> - Create the new feature branch
     - `git checkout -b v0.5`
 > - Work on the scope defined <a href="https://github.com/Learning-Fuze/calculator/tree/v.5#scope">Below</a>
 > - Add files to git
