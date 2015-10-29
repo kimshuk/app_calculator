@@ -10,8 +10,8 @@ to the calculator object the user can interact with the object to receive the va
     - **not master**
         - Create pull request form current branch to master
         - Merge pull request on master
-        - Move on to Pull Latest Changes
-    - **master** - Move on to Pull Latest Changes
+        - Go to Pull Latest Changes
+    - **master** - Go to Pull Latest Changes
 > - Pull Latest Changes
         - `git checkout master`
         - `git pull origin master`
@@ -37,14 +37,17 @@ to the calculator object the user can interact with the object to receive the va
     - JS Functionality
         - Declare and define a function that takes in 3 parameters
             - **Parameters**
-                - type - will be a string equal to one of the following "itemAdded", "calculated", "error"
+                - type - will be a string equal to one of the following
+                    - "itemAdded"
+                    - "calculated"
+                    - "error"
                 - value - either a string or a number
                 - item - **Only use for advanced functionality** Object of different types
-            - Inside this function take in the value and display into the DOM within the correct layout area
+            - Take the value and display in the correct layout area within the DOM
                 - The display of the calculation will be up to each students interpretation of how a calculator should look. **If you need ideas
                 look at your calculator on your phone.**
-        - Create a new global variable **my_calculator** with the value defined as `new calculator(newFunc)` where newFunc is equal to the reference to the defined function above
-        - Add click handlers to all buttons in your layout that when called does the following
+        - Create a new global variable **my_calculator** with the value defined as `new calculator(newFunc)` where newFunc is equal to the referenced function defined above
+        - Add click handlers to all buttons in the DOM, when called they do the following
             - Defines a variable **val** equal to the value of the button pressed.
                 - **Example : ** if "=" button was pressed then the value of the variable above would be a string "=";
             - Insert the following into the click handler function `my_calculator.addItem(val)`. Once this is called the function that was passed into the calculator object above will be called with parameters dependant on the value of the variable val
