@@ -36,4 +36,4 @@ by taking the inputs from the calculator and inserting them into objects and the
         - value - equal to the value of the button
     - Add object into an global array variable
     - Process calculation based on objects in array
-> - Calculator Logic Examples with outputted values found <a href="https://docs.google.com/spreadsheets/d/1HRpRqdyQrax5vgwrVatcOxSxly6GHXXfZuzc0lb9Tfg/edit#gid=0">here</a>
+> - Calculator Logic Examples with outputted values found <a href="https://docs.google.com/spreadsheets/d/1HRpRqdyQrax5vgwrVatcOxSxly6GHXXfZuzc0lb9Tfg/pubhtml#">here</a>
