@@ -1,4 +1,4 @@
-# Version 0.5
+# Version 1.0
 
 ## Description
 Version 1 takes the layout and basic button click functionality built in the 2 previous versions and then ties in the calculation functionality. This version works toward more OOP understandings
