@@ -3,33 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <title>Calculator</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="script.js"></script>
 </head>
 <body>
-    <div id="container">
-        <div id="top-part">
-            <div id="screen"></div>
+    <div class="calc_container">
+        <!--Display calculation-->
+        <div class="display">
+            <input class="output" type="text" name="ReadOut" value="0">
         </div>
-        <div id="bot-part">
-            <button id="clear-all">C</button>
-            <button id="clear-entry">CE</button>
-            <button id="seven">7</button>
-            <button id="eight">8</button>
-            <button id="nine">9</button>
-            <button id="divide">%</button>
-            <button id="four">4</button>
-            <button id="five">5</button>
-            <button id="six">6</button>
-            <button id="multiply">x</button>
-            <button id="one">1</button>
-            <button id="two">2</button>
-            <button id="three">3</button>
-            <button id="subtract">-</button>
-            <button id="zero">0</button>
-            <button id="decimal">.</button>
-            <button id="equals">=</button>
-            <button id="add">+</button>
+        <div class="left_calc">
+            <div class="reset">
+                <button class="btnC"> C </button>
+                <button class="btnCE"> CE </button>
+            </div>
+            <div class="digit">
+                <div class="first_row">
+                    <button class="btn7"> 7 </button>
+                    <button class="btn8"> 8 </button>
+                    <button class="btn9"> 9 </button>
+                </div>
+                <div class="second_row">
+                    <button class="btn4"> 4 </button>
+                    <button class="btn5"> 5 </button>
+                    <button class="btn6"> 6 </button>
+                </div>
+                <div class="third_row">
+                    <button class="btn1"> 1 </button>
+                    <button class="btn2"> 2 </button>
+                    <button class="btn3"> 3 </button>
+                </div>
+                <div class="fourth_row">
+                    <button class="btn0"> 0 </button>
+                </div>
+            </div>
+        </div>
+        <div class="operator">
+            <button class="btnDiv"> / </button>
+            <button class="btnMul"> * </button>
+            <button class="btnMns"> - </button>
+            <button class="btnPls"> + </button>
+            <button class="btnEql"> = </button>
         </div>
     </div>
 </body>
