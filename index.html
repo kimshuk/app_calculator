@@ -5,47 +5,53 @@
     <title>Calculator</title>
     <link href="style.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="script.js"></script>
+
 </head>
 <body>
-    <div class="calc_container">
+    <div class="container">
         <!--Display calculation-->
         <div class="display">
             <input class="output" type="text" name="ReadOut" value="0">
         </div>
         <div class="left_calc">
             <div class="reset">
-                <button class="btnC"> C </button>
-                <button class="btnCE"> CE </button>
+                <button class="btn btn-default"> C </button>
+                <button class="btn btn-default"> CE </button>
             </div>
             <div class="digit">
-                <div class="first_row">
-                    <button class="btn7"> 7 </button>
-                    <button class="btn8"> 8 </button>
-                    <button class="btn9"> 9 </button>
+                <div class="row">
+                    <button class="btn btn-default"> 7 </button>
+                    <button class="btn btn-default"> 8 </button>
+                    <button class="btn btn-default"> 9 </button>
                 </div>
-                <div class="second_row">
-                    <button class="btn4"> 4 </button>
-                    <button class="btn5"> 5 </button>
-                    <button class="btn6"> 6 </button>
+                <div class="row">
+                    <button class="btn btn-default"> 4 </button>
+                    <button class="btn btn-default"> 5 </button>
+                    <button class="btn btn-default"> 6 </button>
                 </div>
-                <div class="third_row">
-                    <button class="btn1"> 1 </button>
-                    <button class="btn2"> 2 </button>
-                    <button class="btn3"> 3 </button>
+                <div class="row">
+                    <button class="btn btn-default"> 1 </button>
+                    <button class="btn btn-default"> 2 </button>
+                    <button class="btn btn-default"> 3 </button>
                 </div>
-                <div class="fourth_row">
-                    <button class="btn0"> 0 </button>
+                <div class="row">
+                    <button class="btn btn-default"> </button>
+                    <button class="btn btn-default"> 0 </button>
+                    <button class="btn btn-default"> . </button>
                 </div>
             </div>
         </div>
         <div class="operator">
-            <button class="btnDiv"> / </button>
-            <button class="btnMul"> * </button>
-            <button class="btnMns"> - </button>
-            <button class="btnPls"> + </button>
-            <button class="btnEql"> = </button>
+            <button class="btn btn-default"> / </button>
+            <button class="btn btn-default"> * </button>
+            <button class="btn btn-default"> - </button>
+            <button class="btn btn-default"> + </button>
+            <button class="btn btn-default"> = </button>
         </div>
     </div>
 </body>
