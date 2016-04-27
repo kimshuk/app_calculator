@@ -21,7 +21,7 @@
     background-color: #444349;
 }
 
-.output {
+#output {
     text-align: right;
     /* margin: auto; */
     position: relative;
@@ -39,7 +39,7 @@ button {
     width: 8vw;
     height: 14vh;
     margin-top: 1%;
-    font-size: 3em;
+    font-size: 20px;
 }
 
 .btnC, .btnCE {

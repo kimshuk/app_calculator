@@ -1,40 +1,38 @@
 
-var first_number_entered = null;
-var second_number_entered = null;
-var canClick = false;
-var FKeyPad = document.keypad;
 
-function calculator (user_digit_input) {
-    if (canClick) {
-        FKeyPad.ReadOut.value = user_digit_input;
-        canClick = false;
-        return;
-    } else {
-        if (FKeyPad.ReadOut.value == "0") {
-            FKeyPad.ReadOut.value = user_digit_input;
-        } else {
-            FKeyPad.ReadOut.value += user_digit_input;
-
-        }
+function callback(type, value, item) {
+    switch (value) {
+        case undefined:
+            $('#output').html("");
+            break;
+        default:
+            $('#output').html(value);
+            break;
     }
-
-
 }
 
-function button_pressed () {
-    $("button").click(function() {
-        $(this).text();
-
-    });
-}
+//OOP
+var my_calculator = new calculator(callback);
 
 $(document).ready(function(){
 
-    $("button").click(function() {
-        $(this).text();
+    $("button").on('click', function() {
+        var val = $(this).text();
+        console.log("btn clicked: ", val);
 
+        switch (val) {
+            case 'C':
+                my_calculator.clear();
+                break;
+            case 'CE':
+                my_calculator.allClear();
+                break;
+            default:
+                console.log("what");
+                my_calculator.addItem($(this).text());
+                break;
+        }
     });
-
 });
 
 
