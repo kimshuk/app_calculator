@@ -29,7 +29,7 @@ $(document).ready(function(){
                 break;
             default:
                 console.log("what");
-                my_calculator.addItem($(this).text());
+                my_calculator.addItem(val);
                 break;
         }
     });
