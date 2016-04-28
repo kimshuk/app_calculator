@@ -1,7 +1,7 @@
 var memory = "0";
 var current = "0";
 var operation = 0;
-var MAXLENGTH = 10;
+MAXLENGTH = 15;
 
 //function to input numbers on display section
 function display (dig) {
@@ -13,8 +13,16 @@ function display (dig) {
         current = dig;
     } else {        //if prev num is not 0, then add to prev
         current += dig;
-    };
+    }
     $('#output').html(current);
+}
+
+function fixInput() {
+    current = "" + parseFloat($('#output').html());
+    if (current.indexOf("NaN") != -1) {
+        current = "I don't understand your input";
+    }
+    $("#output").html(current);
 }
 
 //function for C and CE
@@ -33,22 +41,25 @@ function allClear() {
 //function to respond operators (+, -, /, *)
 function operate(op) {
     switch (op) {
-        case (op.indexOf("&times;") == 1):
+        case (op.indexOf("&times;") >= 0):
             operation = 1;
             break;
-        case (op.indexOf("&divide;") == 1):
+        case (op.indexOf("&divide;") >= 0):
             operation = 2;
             break;
-        case (op.indexOf("&plus;") == 1):
+        case (op.indexOf("&plus;") >= 0):
             operation = 3;
             break;
-        case (op.indexOf("&minus;") == 1):
+        case (op.indexOf("&minus;") >= 0):
             operation = 4;
             break;
         default:
             console.log("what is this?");
             break;
     }
+    memory = current;   //store current value to memory
+    current = "";       //reset current value
+    $('#output').html(current);
 }
 
 //function to calculate (press "=")
@@ -74,6 +85,9 @@ function calculate() {
             console.log("something wrong");
             break;
     }
+    operation = 0;
+    memory = "0";
+    // current =
 }
 
 $(document).ready(function(){
@@ -97,6 +111,7 @@ $(document).ready(function(){
                 break;
             default:
                 display(val);
+                // fixInput();
                 break;
         }
     });
