@@ -110,6 +110,7 @@ function calc_constructor() {
 
         self.num_array = [self.result];   // store result to num_array
         self.index = 0;                 // set index back to 0
+        self.operator = "";
         console.log("self.result: ", self.result);
         self.display(self.result);   // display result
         return self.result;             // return result
