@@ -71,13 +71,12 @@ function calc_constructor() {
      */
     self.operator_clicked = function (val) {
 
-        self.operator = val;
-
         // check if operator has been set before
-        if( typeof self.operator === 'string') {
+        if( self.operator !== "") {
             self.operator = val;    //replace previous operator to new one
             console.log("Operator replaced");
         } else {
+            self.operator = val;
             self.index++;   // increase index
             self.num_array[self.index] = "";//reset current num_array
         }
