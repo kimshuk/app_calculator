@@ -1,117 +1,189 @@
-var numArray = [];
-var numObj = {};
-var multiDigit = "";
-// var operator = "";
-var index = 0;
-MAXLENGTH = 15;
+function calc_constructor() {
+    var self = this; //save scope
+    self.num_array = [""]; //array to store
+    self.operator = '';//variable to store operator
+    self.index = 0;//index for array
+    self.result = null;//variable to store result
 
-//function to input numbers on display section
-function display (dig) {
-    //check if the user input is too long
-    if (multiDigit.length >= MAXLENGTH) {
-        multiDigit = "Please put less than 15 digits";
-    } else if ( multiDigit == "0") {
-        multiDigit = dig;
-    } else {
-        multiDigit += dig;
-    }
-    $('#output').html(multiDigit);     //display the input on the screen
-}
-
-//function for C and CE
-function clear() {
-    multiDigit = 0;
-    numObj = {};
-    $('#output').html(multiDigit);
-}
-
-function allClear() {
-    multiDigit = 0;
-    numArray = [];
-    $('#output').html(multiDigit);
-}
-
-//function for decimal point
-function dec() {
-    if (multiDigit.length == 0) {
-        multiDigit = "0.";
-    } else {
-        if (multiDigit.indexOf(".") == -1) {
-            multiDigit += ".";
-        }
-    }
-    $('#output').html(multiDigit);
-}
-
-
-//function to respond operators (+, -, /, *)
-function operate(op) {
-    numObj = {      //put value into object's key
-        value: parseFloat(multiDigit),
-        type: op
-    };
-    numArray.push(numObj);
-    multiDigit = "";
-    $('#output').html(operator);     //display the input operator on the screen
-}
-//function to calculate (press "=")
-function calculate() {
-    var result = 0;
-
-    numObj = {
-        value: parseFloat(multiDigit)
-    };
-    numArray.push(numObj);
-
-    for(var i=0; i<numArray.length - 1; i++) {
-        switch (numArray[i].type) {
-            case "*":      //find if user entered is "*"
-                result = parseFloat(numArray[i].value) * parseFloat(numArray[i + 1].value);
+    /**
+     * When button is pressed, find if this is operator, clear, all clear, decimal, or number
+     */
+    self.button_pressed = function (val) {
+        switch (val) {
+            case "+":
+            case "-":
+            case "/":
+            case "*":
+                self.operator_clicked(val);
                 break;
-            case "/":     //find if user entered is "/"
-                if (numArray[i+1].value == 0) {
-                    result = "error";
-                } else {
-                    result = parseFloat(numArray[i].value) / parseFloat(numArray[i + 1].value);
-                }
+            case "=":
+                self.evaluate_array();
                 break;
-            case "+":       //find if user entered is "+"
-                result = parseFloat(numArray[i].value) + parseFloat(numArray[i + 1].value);
+            case "C":
+                self.clear_entry();
                 break;
-            case "-":      //find if user entered is "-"
-                result = parseFloat(numArray[i].value) - parseFloat(numArray[i + 1].value);
+            case "CE":
+                self.clear_all();
                 break;
             default:
-                console.log("what is this?");       //foolproof message: throws an error message on console
+                self.number_clicked(val);
                 break;
         }
-        numArray[i+1].value = result;
-    }
-    multiDigit = numArray[numArray.length - 1].value;
-    numArray = [];
-    $('#output').html(result);
-}
+    };
 
-$(document).ready(function(){
+    /**
+     * display function
+     * @param val
+     */
+    self.display = function (val) {
+        $('#output').html(val);
+    };
 
-    $("button").on('click', function() {
-        var val = $(this).text();
-        console.log("btn clicked: ", val);
+    /**
+     * number clicked function
+     * @param val
+     */
+    self.number_clicked = function (val) {
+        self.num_array[self.index] += val;  //store number to num_array
+        self.display(self.num_array[self.index]);   //display stored num_array
+    };
 
-        if ((val == "-") || (val == "/") || (val == "+") || (val == "*")) {
-            operate(val);
-        } else if (val == "=") {
-            calculate();
-        } else if (val == "C") {
-            clear();
-        } else if (val == "CE") {
-            allClear();
-        } else  if (val != NaN) {
-            display(val);
-        } else if (val = ".") {
-            dec();
+    /**
+     * decimal clicked function
+     */
+    self.decimal_clicked = function () {
+        //checks num_array and locates decimal. If decimal present, return
+        if(self.num_array[self.index].indexOf('.') != -1) {
+            return;
         }
+        //if user presses decimal first, insert 0 before decimal
+        else if (self.num_array[self.index] === '') {
+            self.num_array[self.index] += 0;
+        }
+
+        self.num_array[self.index] += val;  //store decimal
+        self.display(self.num_array[self.index]);   //display input
+    };
+
+
+    /**
+     *  operator clicked function
+     */
+    self.operator_clicked = function (val) {
+
+        self.operator = val;
+
+        // check if operator has been set before
+        if( typeof self.operator === 'string') {
+            self.operator = val;    //replace previous operator to new one
+            console.log("Operator replaced");
+        } else {
+            self.index++;   // increase index
+            self.num_array[self.index] = "";//reset current num_array
+        }
+        self.display(val);//display operator
+    };
+    /**
+     * equal function
+     * Calculate when "=" is pressed
+     */
+    self.evaluate_array = function () {
+
+        // if user presses enter when array is empty, don't evaluate array
+        if (self.num_array[0] == "" || self.num_array[1] == "") {
+            console.log("enter first");
+            return;
+        }
+        // check operator for what arithmetic function
+        if (self.operator == "+") {
+            self.result = parseFloat(self.num_array[0]) + parseFloat(self.num_array[1]);
+        } else if (self.operator == "-") {
+            self.result = parseFloat(self.num_array[0]) - parseFloat(self.num_array[1]);
+        } else if (self.operator == "*") {
+            self.result = parseFloat(self.num_array[0]) * parseFloat(self.num_array[1]);
+        } else if (self.operator == "/") {
+            if (self.num_array[1] == "0") {
+                return "Invalid";
+            } else {
+                self.result = parseFloat(self.num_array[0]) / parseFloat(self.num_array[1]);
+            }
+        }
+
+        self.num_array = [self.result];   // store result to num_array
+        self.index = 0;                 // set index back to 0
+        console.log("self.result: ", self.result);
+        self.display(self.result);   // display result
+        return self.result;             // return result
+
+    };
+    /**
+     * clear entry function
+     */
+    self.clear_entry = function () {
+        self.num_array[self.index] = "0";   // reset num_array with current index
+        self.display(self.num_array[self.index]);   // display 0
+    };
+    /**
+     * clear all function
+     */
+    self.clear_all = function () {
+        self.num_array = [""];    // reset whole num_array
+        self.operator = "";     // reset operator
+        self.index = 0;         // reset index to 0
+        self.display("0");// display 0
+    };
+    /**
+     * button pressed function
+     * @param keyCode
+     * @returns key_chart or 'Invalid'
+     */
+
+    self.keyboard_pressed = function (keyCode) {
+        //keyboard code object
+        var keyChart = {
+            48: 0,
+            49: 1,
+            50: 2,
+            51: 3,
+            52: 4,
+            53: 5,
+            54: 6,
+            55: 7,
+            56: 8,
+            57: 9,
+            46: '.',
+            43: '+',
+            45: '-',
+            42: 'x',
+            47: '÷',
+            13: '=',
+            99: 'C'
+        };
+
+
+        // check if key_chart is defined
+        if (keyChart[keyCode] != undefined) {
+            return keyChart[keyCode];
+        } else {
+            return 'Invalid';
+        }
+    }
+}
+/**
+ * document ready area
+ */
+$(document).ready(function() {
+    // calculator instantiation
+    var calc = new calc_constructor();
+
+    // click handler
+    $('button').click(function () {
+        calc.button_pressed($(this).text());
     });
+
+    //keyboard input handler
+    $(window).on('keypress', function (e) {
+        calc.button_pressed(keyboard_press(e.keyCode));
+    });
+
 });
-
-
