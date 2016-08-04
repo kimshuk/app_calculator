@@ -10,4 +10,4 @@ A standard calculator with basic and complex arithmetic functions.
 - [ ] **Parantheses**
 - [ ] **Order of Operations**
 
-### [LIVE DEMO](https://kimshuk.github.io/app_calculator/)
+### [LIVE DEMO](http://jeesookim.com/app_calculator/)
