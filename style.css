@@ -3,6 +3,11 @@
     magin: auto;
 }
 
+body {
+    background: url("desk_background.jpg") no-repeat;
+    background-size: cover;
+}
+
 .wrapper {
     margin: auto;
     /* height: 100vh; */
