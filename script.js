@@ -25,6 +25,9 @@ function calc_constructor() {
             case "CE":
                 self.clear_all();
                 break;
+            case ".":
+                self.decimal_clicked(val);
+                break;
             default:
                 self.number_clicked(val);
                 break;
@@ -44,14 +47,18 @@ function calc_constructor() {
      * @param val
      */
     self.number_clicked = function (val) {
-        self.num_array[self.index] += val;  //store number to num_array
+        if (self.num_array[self.index] == "0" || self.num_array[self.index] == "Invalid") {
+            self.num_array[self.index] = val;
+        } else {
+            self.num_array[self.index] += val;  //store number to num_array
+        }
         self.display(self.num_array[self.index]);   //display stored num_array
     };
 
     /**
      * decimal clicked function
      */
-    self.decimal_clicked = function () {
+    self.decimal_clicked = function (val) {
         //checks num_array and locates decimal. If decimal present, return
         if(self.num_array[self.index].indexOf('.') != -1) {
             return;
@@ -75,11 +82,13 @@ function calc_constructor() {
         if( self.operator !== "") {
             self.operator = val;    //replace previous operator to new one
             console.log("Operator replaced");
+        } if (typeof self.num_array[1] == "string") {
+            self.evaluate_array();
         } else {
             self.operator = val;
-            self.index++;   // increase index
-            self.num_array[self.index] = "";//reset current num_array
         }
+        self.index++;   // increase index
+        self.num_array[self.index] = "";//reset current num_array
         self.display(val);//display operator
     };
     /**
@@ -90,6 +99,10 @@ function calc_constructor() {
 
         // if user presses enter when array is empty, don't evaluate array
         if (self.num_array[0] == "" || self.num_array[1] == "") {
+            self.display("Invalid");
+            self.index = 0;
+            self.num_array = [""];    // reset whole num_array
+            self.operator = "";     // reset operator
             console.log("enter first");
             return;
         }
@@ -102,7 +115,7 @@ function calc_constructor() {
             self.result = parseFloat(self.num_array[0]) * parseFloat(self.num_array[1]);
         } else if (self.operator == "/") {
             if (self.num_array[1] == "0") {
-                return "Invalid";
+                self.result = "Invalid";
             } else {
                 self.result = parseFloat(self.num_array[0]) / parseFloat(self.num_array[1]);
             }
@@ -110,7 +123,6 @@ function calc_constructor() {
 
         self.num_array = [self.result];   // store result to num_array
         self.index = 0;                 // set index back to 0
-        self.operator = "";
         console.log("self.result: ", self.result);
         self.display(self.result);   // display result
         return self.result;             // return result
@@ -183,7 +195,7 @@ $(document).ready(function() {
 
     //keyboard input handler
     $(window).on('keypress', function (e) {
-        calc.button_pressed(keyboard_press(e.keyCode));
+        calc.button_pressed(calc.keyboard_pressed(e.keyCode));
     });
 
 });
